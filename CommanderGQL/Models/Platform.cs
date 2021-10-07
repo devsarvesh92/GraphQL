@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using HotChocolate;
 
 namespace CommanderGQL.Models
 {
+    [GraphQLDescription("Represents Platforms")]
     /// <summary>
     /// Platform
     /// </summary>
@@ -24,12 +26,17 @@ namespace CommanderGQL.Models
         [Key]
         public int Id { get; set; }
 
+
+        [GraphQLDescription("Name of Platform")]
         /// <summary>
         /// Name
         /// </summary>
         /// <value></value>
         [Required]
         public string Name { get; set; }
+
+
+        [GraphQLDescription("Valid License Key")]
 
         /// <summary>
         /// LicenseKey

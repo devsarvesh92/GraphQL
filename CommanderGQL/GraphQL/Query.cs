@@ -12,6 +12,7 @@ namespace CommanderGQL
     public class Query
     {
         [UseDbContext(typeof(AppDbContext))]
+        [UseProjection]
         /// <summary>
         /// GetPlatforms
         /// </summary>
@@ -21,5 +22,20 @@ namespace CommanderGQL
         {
             return dbContext.Platforms;
         }
+
+        [UseDbContext(typeof(AppDbContext))]
+        [UseProjection]
+        /// <summary>
+        /// GetCommands
+        /// </summary>
+        /// <param name="dbContext"></param>
+        /// <returns></returns>
+        public IQueryable<Command> GetCommands([ScopedService] AppDbContext dbContext)
+        {
+            return dbContext.Commands;
+        }
+
+
+
     }
 }
