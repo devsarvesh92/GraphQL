@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CommanderGQL.Data;
-using CommanderGQL.GraphQL;
+using CommanderGQL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -20,14 +20,14 @@ namespace CommanderGQL
 
         public Startup(IConfiguration configuration)
         {
-            this.configuration=configuration;
+            this.configuration = configuration;
 
         }
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(opt=>opt.UseSqlServer(configuration.GetConnectionString("ConStr")));
+            services.AddPooledDbContextFactory<AppDbContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("ConStr")));
             services
                 .AddGraphQLServer()
                 .AddQueryType<Query>();
@@ -43,10 +43,20 @@ namespace CommanderGQL
 
             app.UseRouting();
 
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGraphQL();
             });
+
+            //Add GraphQLVoyager
+            app.UseGraphQLVoyager(new GraphQL.Server.Ui.Voyager.VoyagerOptions()
+            {
+                GraphQLEndPoint = "/graphql",
+
+            }, "/graphql-voyager");
+
+
         }
     }
 }

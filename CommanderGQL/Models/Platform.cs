@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace CommanderGQL.Models
@@ -7,6 +8,15 @@ namespace CommanderGQL.Models
     /// </summary>
     public class Platform
     {
+
+        /// <summary>
+        /// Consturctot
+        /// </summary>
+        public Platform()
+        {
+            Commands = new List<Command>();
+        }
+
         /// <summary>
         /// Id
         /// </summary>
@@ -26,6 +36,12 @@ namespace CommanderGQL.Models
         /// </summary>
         /// <value></value>
         public string LicenseKey { get; set; }
+
+        /// <summary>
+        /// Commands
+        /// </summary>
+        /// <value></value>
+        public ICollection<Command> Commands { get; set; }
     }
 }
 
