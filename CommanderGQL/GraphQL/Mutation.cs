@@ -15,6 +15,12 @@ namespace CommanderGQL.GraphQL
     public class Mutation
     {
 
+        /// <summary>
+        /// AddPlatform
+        /// </summary>
+        /// <param name="appDbContext"></param>
+        /// <param name="input"></param>
+        /// <returns></returns>
         [UseDbContext(typeof(AppDbContext))]
         public async Task<AddPlatformPayload> AddPlatform([ScopedService] AppDbContext appDbContext, AddPlatformInput input)
         {
@@ -29,6 +35,13 @@ namespace CommanderGQL.GraphQL
 
         }
 
+
+        /// <summary>
+        /// AddCommandForPlatform
+        /// </summary>
+        /// <param name="appDbContext"></param>
+        /// <param name="commandInput"></param>
+        /// <returns></returns>
         [UseDbContext(typeof(AppDbContext))]
         public async Task<AddCommandPayload> AddCommandForPlatformAsync([ScopedService] AppDbContext appDbContext, AddCommandInput commandInput)
         {
@@ -39,10 +52,11 @@ namespace CommanderGQL.GraphQL
 
             var command = new Command()
             {
-                CommandLine=commandInput.CommandLine,
+                CommandLine = commandInput.CommandLine,
                 HowTo = commandInput.HowTo,
                 PlatformId = commandInput.PlatformId
             };
+
             appDbContext.Commands.Add(command);
 
             await appDbContext.SaveChangesAsync();
