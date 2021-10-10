@@ -4,21 +4,12 @@ using HotChocolate;
 
 namespace CommanderGQL.Models
 {
-    [GraphQLDescription("Represents Platforms")]
+
     /// <summary>
     /// Platform
     /// </summary>
     public class Platform
     {
-
-        /// <summary>
-        /// Consturctot
-        /// </summary>
-        public Platform()
-        {
-            Commands = new List<Command>();
-        }
-
         /// <summary>
         /// Id
         /// </summary>
@@ -35,9 +26,6 @@ namespace CommanderGQL.Models
         [Required]
         public string Name { get; set; }
 
-
-        [GraphQLDescription("Valid License Key")]
-
         /// <summary>
         /// LicenseKey
         /// </summary>
@@ -48,7 +36,7 @@ namespace CommanderGQL.Models
         /// Commands
         /// </summary>
         /// <value></value>
-        public ICollection<Command> Commands { get; set; }
+        public ICollection<Command> Commands { get; set; } = new List<Command>();
     }
 }
 

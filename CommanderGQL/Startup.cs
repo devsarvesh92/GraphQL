@@ -11,6 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using GraphQL.Server.Ui.Voyager;
+using System.Data;
+using CommanderGQL.Platforms;
 
 namespace CommanderGQL
 {
@@ -31,7 +34,10 @@ namespace CommanderGQL
             services
                 .AddGraphQLServer()
                 .AddQueryType<Query>()
-                .AddProjections();
+                .AddType<PlatformType>()
+                .AddType<CommanderGQL.Commands.CommandType>()
+                .AddFiltering()
+                .AddSorting();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,20 +50,15 @@ namespace CommanderGQL
 
             app.UseRouting();
 
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGraphQL();
             });
 
-            //Add GraphQLVoyager
-            app.UseGraphQLVoyager(new GraphQL.Server.Ui.Voyager.VoyagerOptions()
+            app.UseGraphQLVoyager(new VoyagerOptions()
             {
                 GraphQLEndPoint = "/graphql",
-
-            }, "/graphql-voyager");
-
-
+            },"/graphql-voyager");
         }
     }
 }

@@ -12,30 +12,30 @@ namespace CommanderGQL
     public class Query
     {
         [UseDbContext(typeof(AppDbContext))]
-        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
         /// <summary>
         /// GetPlatforms
         /// </summary>
         /// <param name="dbContext"></param>
         /// <returns></returns>
-        public IQueryable<Platform> GetPlatforms([ScopedService] AppDbContext dbContext)
+        public IQueryable<Platform> GetPlatform([ScopedService] AppDbContext dbContext)
         {
             return dbContext.Platforms;
         }
 
-        [UseDbContext(typeof(AppDbContext))]
-        [UseProjection]
+
         /// <summary>
-        /// GetCommands
+        /// Gets the queryable <see cref="Command"/>.
         /// </summary>
-        /// <param name="dbContext"></param>
-        /// <returns></returns>
-        public IQueryable<Command> GetCommands([ScopedService] AppDbContext dbContext)
+        /// <param name="context">The <see cref="AppDbContext"/>.</param>
+        /// <returns>The queryable <see cref="Command"/>.</returns>
+        [UseDbContext(typeof(AppDbContext))]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<Command> GetCommand([ScopedService] AppDbContext context)
         {
-            return dbContext.Commands;
+            return context.Commands;
         }
-
-
-
     }
 }
