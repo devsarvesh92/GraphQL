@@ -30,7 +30,6 @@ namespace CommanderGQL.Platforms
 
         public class Resolvers
         {
-
             /// <summary>
             /// GetCommands
             /// </summary>

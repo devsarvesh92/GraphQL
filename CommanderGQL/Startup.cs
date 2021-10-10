@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using GraphQL.Server.Ui.Voyager;
 using System.Data;
 using CommanderGQL.Platforms;
+using CommanderGQL.GraphQL;
 
 namespace CommanderGQL
 {
@@ -34,6 +35,7 @@ namespace CommanderGQL
             services
                 .AddGraphQLServer()
                 .AddQueryType<Query>()
+                .AddMutationType<Mutation>()
                 .AddType<PlatformType>()
                 .AddType<CommanderGQL.Commands.CommandType>()
                 .AddFiltering()
