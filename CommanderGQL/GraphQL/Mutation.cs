@@ -6,6 +6,9 @@ using HotChocolate.Data;
 using CommanderGQL.Models;
 using CommanderGQL.Commands;
 using System;
+using HotChocolate.Subscriptions;
+using System.Threading;
+using CommanderGQL.Subscriptions;
 
 namespace CommanderGQL.GraphQL
 {
@@ -22,7 +25,10 @@ namespace CommanderGQL.GraphQL
         /// <param name="input"></param>
         /// <returns></returns>
         [UseDbContext(typeof(AppDbContext))]
-        public async Task<AddPlatformPayload> AddPlatform([ScopedService] AppDbContext appDbContext, AddPlatformInput input)
+        public async Task<AddPlatformPayload> AddPlatform([ScopedService] AppDbContext appDbContext
+                                                        , AddPlatformInput input,
+                                                        [Service] ITopicEventSender eventSender,
+                                                        CancellationToken cancellationToken)
         {
             var platform = new Platform()
             {
@@ -30,7 +36,9 @@ namespace CommanderGQL.GraphQL
             };
             appDbContext.Platforms.Add(platform);
 
-            await appDbContext.SaveChangesAsync();
+            await appDbContext.SaveChangesAsync(cancellationToken);
+            await eventSender.SendAsync(nameof(Subscription.OnPlatformAdded), platform, cancellationToken);
+
             return new AddPlatformPayload(platform);
 
         }

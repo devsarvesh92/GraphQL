@@ -15,6 +15,7 @@ using GraphQL.Server.Ui.Voyager;
 using System.Data;
 using CommanderGQL.Platforms;
 using CommanderGQL.GraphQL;
+using CommanderGQL.Subscriptions;
 
 namespace CommanderGQL
 {
@@ -34,12 +35,14 @@ namespace CommanderGQL
             services.AddPooledDbContextFactory<AppDbContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("ConStr")));
             services
                 .AddGraphQLServer()
+                .AddSubscriptionType<Subscription>()
                 .AddQueryType<Query>()
                 .AddMutationType<Mutation>()
                 .AddType<PlatformType>()
                 .AddType<CommanderGQL.Commands.CommandType>()
                 .AddFiltering()
-                .AddSorting();
+                .AddSorting()
+                .AddInMemorySubscriptions();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +52,8 @@ namespace CommanderGQL
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseWebSockets();
 
             app.UseRouting();
 
@@ -60,7 +65,7 @@ namespace CommanderGQL
             app.UseGraphQLVoyager(new VoyagerOptions()
             {
                 GraphQLEndPoint = "/graphql",
-            },"/graphql-voyager");
+            }, "/graphql-voyager");
         }
     }
 }
